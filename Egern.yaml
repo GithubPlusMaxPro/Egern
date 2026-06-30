@@ -1,23 +1,14 @@
-# 是否启用 IPv6。默认值是 false
-ipv6: true
-# 允许外部连接通过 Wi-Fi 访问设备上的代理。默认值是 false
+ipv6: false
 allow_external_connections: true
-# 仅虚拟网接口模式。默认值是 false
 vif_only: true
-# 全局阻止 QUIC 协议，强制使用 TCP 连接。默认值是 false
-# 优先级：代理 > 策略组 > 全局。代理自身的 block_quic 优先级最高，
-# 其次是策略组的 block_quic，最后是此全局设置。
-# 若三者均未设置，则使用协议默认值（TCP 类协议默认阻止，UDP 类协议默认放行）。
 block_quic: true
-# 隐藏 VPN 图标。默认值是 false
 hide_vpn_icon: false
-geoip_db_url: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country-without-asn.mmdb
-asn_db_url: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-ASN.mmdb
+geoip_db_url: https://github.com/xream/geoip/releases/latest/download/ipinfo.country.mmdb
+asn_db_url: https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-ASN.mmdb
 proxy_latency_test_url: https://connectivitycheck.gstatic.com/generate_204
-direct_latency_test_url: http://wifi.vivo.com.cn/generate_204
+direct_latency_test_url: https://www.qq.com
 udp_latency_test_url: google.com@8.8.8.8
-# 兼容路由模式。默认值是 false
-compat_route: false
+compat_route: true
 dns:
   bootstrap:
   - 223.5.5.5
@@ -68,14 +59,14 @@ policy_groups:
         match: CMCC_5G
         policy: DIRECT
     default_policy: 手动选择
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
+    icon: https://iili.io/K0KrBdQ.png
     hidden: false
 - select:
     name: 手动选择
     policies: []
     flatten: true
     block_quic: true
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available.png
+    icon: https://iili.io/K0KvJv1.png
     hidden: false
 - smart:
     name: 香港节点
@@ -84,7 +75,7 @@ policy_groups:
     flatten: true
     filter: 🇭🇰|Hong Kong|Hong|HK|HKG|香港
     block_quic: true
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+    icon: https://iili.io/FaAI3Bt.png
     hidden: false
 - smart:
     name: 新国节点
@@ -92,7 +83,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇸🇬|新加坡|Singapore|SG
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+    icon: https://iili.io/FaRfFXn.png
     hidden: false
 - smart:
     name: 台湾节点
@@ -100,7 +91,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇹🇼|台湾|Taiwan|TW|Tai
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+    icon: https://iili.io/Kb9Iauj.png
     hidden: false
 - smart:
     name: 日本节点
@@ -108,7 +99,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇯🇵|Japan|Tokyo|JP|日本
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+    icon: https://iili.io/Fa5AnTb.png
     hidden: false
 - smart:
     name: 韩国节点
@@ -116,7 +107,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇰🇷|韩国|Korea|KR
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
+    icon: https://iili.io/Fa5Mdn1.png
     hidden: false
 - smart:
     name: 美国节点
@@ -124,7 +115,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇺🇸|美国|United States|USA|US|States
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
+    icon: https://iili.io/FaAug7s.png
     hidden: false
 - smart:
     name: 荷兰节点
@@ -132,30 +123,61 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇳🇱|荷兰|NLD|NL
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
     hidden: false
 - select:
     name: Ai
     policies:
     - 自动选择
     flatten: false
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png
     hidden: false
 - select:
     name: TG
     policies:
     - 自动选择
     flatten: false
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
     hidden: false
 - select:
     name: YouTube
     policies:
     - 自动选择
     flatten: false
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
     hidden: false
 rules:
+- rule_set:
+    name: Wise
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/wise.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: okx
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/okx.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: GoogleVoice
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GoogleVoice/GoogleVoice.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: emby
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/emby.list
+    policy: emby
+    disabled: false
+- rule_set:
+    name: n26
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/n26.list
+    policy: NL
+    disabled: false
+- rule_set:
+    name: ifast
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/ifast.list
+    policy: NL
+    disabled: false
+- rule_set:
+    name: fibank
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/fibank.list
+    policy: NL
+    disabled: false
 - rule_set:
     match: https://kelee.one/Tool/Loon/Lsr/AI.lsr
     policy: Ai
