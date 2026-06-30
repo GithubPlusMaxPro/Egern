@@ -157,6 +157,41 @@ policy_groups:
     hidden: false
 rules:
 - rule_set:
+    name: Wise
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/wise.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: okx
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/okx.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: GoogleVoice
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GoogleVoice/GoogleVoice.list
+    policy: US
+    disabled: false
+- rule_set:
+    name: emby
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/emby.list
+    policy: emby
+    disabled: false
+- rule_set:
+    name: n26
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/n26.list
+    policy: NL
+    disabled: false
+- rule_set:
+    name: ifast
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/ifast.list
+    policy: NL
+    disabled: false
+- rule_set:
+    name: fibank
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/fibank.list
+    policy: NL
+    disabled: false
+- rule_set:
     match: https://kelee.one/Tool/Loon/Lsr/AI.lsr
     policy: Ai
     disabled: false
