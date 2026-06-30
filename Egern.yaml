@@ -226,6 +226,10 @@ mitm:
   ca_p12: egern.p12
   ca_passphrase: egern
 modules:
+- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/广告平台拦截器.beta.sgmodule
+  enabled: true
+- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/拦截HTTPDNS.beta.sgmodule
+  enabled: true
 - url: https://github.com/DualSubs/YouTube/releases/latest/download/DualSubs.YouTube.yaml
   compat_arguments:
     Type: Translate
@@ -237,4 +241,14 @@ modules:
 - url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20Sub-Store.official.sgmodule
   enabled: true
 - url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/refs/heads/main/modules/script-hub.beta.surge.sgmodule
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Bilibili_remove_ads.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/DragonRead_remove_ads.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/XiaChuFang_remove_ads.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Reddit_remove_ads.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Node_detection_tool.lpx
   enabled: true
