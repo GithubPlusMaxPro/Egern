@@ -52,6 +52,9 @@ policy_groups:
 - conditional:
     name: 自动选择
     rules:
+    - cellular:
+        match: ''
+        policy: 手动选择
     - ssid:
         match: CMCC_5G
         policy: DIRECT
@@ -121,27 +124,6 @@ policy_groups:
     flatten: true
     filter: 🇳🇱|荷兰|NLD|NL
     hidden: false
-- smart:
-    name: 英国节点
-    policies:
-    - 手动选择
-    flatten: true
-    filter: ^(?!.*剩余流量).*?(?:🇬🇧|英国|GBR|GB|EN)
-    hidden: true
-- smart:
-    name: 法国节点
-    policies:
-    - 手动选择
-    flatten: true
-    filter: 🇫🇷|法国|FRA|FR
-    hidden: true
-- smart:
-    name: 德国节点
-    policies:
-    - 手动选择
-    flatten: true
-    filter: 🇩🇪|德国|DEU|DE
-    hidden: true
 - select:
     name: Ai
     policies:
@@ -166,14 +148,6 @@ rules:
     policy: Ai
     disabled: false
 - rule_set:
-    match: https://www.naiixi.com/Extra_Crypto.list
-    policy: Ai
-    disabled: false
-- rule_set:
-    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Crypto/Crypto.list
-    policy: Ai
-    disabled: false
-- rule_set:
     match: https://whatshub.top/rule/Binance.list
     policy: Ai
     disabled: false
@@ -184,18 +158,6 @@ rules:
 - rule_set:
     match: https://yfamilys.com/rule/YouTube.list
     policy: YouTube
-    disabled: false
-- rule_set:
-    match: https://yfamilys.com/rule/ProxyMedia.list
-    policy: 自动选择
-    disabled: false
-- rule_set:
-    match: https://yfamilys.com/rule/Cloudflare.list
-    policy: 自动选择
-    disabled: false
-- rule_set:
-    match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_proxy_list.module
-    policy: 自动选择
     disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/Rabbit-Spec/Surge/refs/heads/Master/Rules/ChinaCIDR.list
@@ -212,40 +174,15 @@ rules:
     disabled: false
 - default:
     policy: 自动选择
-scriptings:
-- generic:
-    name: ip数据中心小组件
-    script_url: https://raw.githubusercontent.com/shadowlynx319/Egern/main/ip-dch.js
-- generic:
-    name: '测试网络下载速度小组件 '
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/NetSpeed_Widget.JS
 mitm:
   ca_p12: egern.p12
   ca_passphrase: egern
-widgets:
-- name: 测试网络下载速度
-  script_name: '测试网络下载速度小组件 '
-- name: IP数据中心
-  script_name: ip数据中心小组件
 modules:
-- url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Telegram.yaml
-  env:
-    CLIENT: Telegram
-  enabled: true
-- url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
-  enabled: true
 - url: https://github.com/DualSubs/YouTube/releases/latest/download/DualSubs.YouTube.yaml
   compat_arguments:
     Type: Translate
   enabled: true
-- url: https://reven.lovebabyforever.workers.dev/reven/iTunes.sgmodule
-  enabled: true
-- name: Revenuecat-系列解锁合集
-  url: http://script.hub/file/_start_/https://raw.githubusercontent.com/chxm1023/Rewrite/main/Reheji.js/_end_/Reheji.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
-  enabled: true
 - url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/surge-loon-to-egern.yaml
-  enabled: true
-- url: https://ddgksf2013.top/module/ScriptHub.Egern.sgmodule
   enabled: true
 - url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20BoxJs.official.sgmodule
   enabled: true
