@@ -1,348 +1,272 @@
-# Author:https://github.com/Repcz
-# TG:https://t.me/LUCYChannel_1024
-# 最后更新时间: 2026-6-28 20:30
-#
-# Egern Version ≥ v2.20.0(772)
-# 官方文档: https://doc.egernapp.com
-#
-# 以 ';' 或 '#' 或 '//' 开头的配置文件行为注释行
-#
-# ================
-http_port: 6152
-socks_port: 6153
+# 是否启用 IPv6。默认值是 false
+ipv6: true
+# 允许外部连接通过 Wi-Fi 访问设备上的代理。默认值是 false
+allow_external_connections: true
+# 仅虚拟网接口模式。默认值是 false
 vif_only: true
-hijack_dns:
-- '*:53'
+# 全局阻止 QUIC 协议，强制使用 TCP 连接。默认值是 false
+# 优先级：代理 > 策略组 > 全局。代理自身的 block_quic 优先级最高，
+# 其次是策略组的 block_quic，最后是此全局设置。
+# 若三者均未设置，则使用协议默认值（TCP 类协议默认阻止，UDP 类协议默认放行）。
+block_quic: true
+# 隐藏 VPN 图标。默认值是 false
+hide_vpn_icon: false
 geoip_db_url: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country-without-asn.mmdb
 asn_db_url: https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-ASN.mmdb
-proxy_latency_test_url: http://1.1.1.1/generate_204
+proxy_latency_test_url: https://connectivitycheck.gstatic.com/generate_204
 direct_latency_test_url: http://wifi.vivo.com.cn/generate_204
+udp_latency_test_url: google.com@8.8.8.8
+# 兼容路由模式。默认值是 false
+compat_route: false
 dns:
   bootstrap:
-  - system
+  - 223.5.5.5
   upstreams:
-    Domestic-DNS:
-    - 223.5.5.5
-    - 119.29.29.29
-    Domestic-Encrypted-DNS:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-    Foreign-Encrypted-DNS:
-    - https://cloudflare-dns.com/dns-query
+    国外dns:
+    - https://1.1.1.1/dns-query
     - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
+    国内dns:
+    - https://223.6.6.6/dns-query
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    兜底dns:
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
+    - https://cloudflare-dns.com/dns-query
   forward:
   - proxy_rule_set:
-      match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Reject.yaml
-      value: REJECT
+      match: https://raw.githubusercontent.com/Loyalsoldier/surge-rules/release/ruleset/direct.txt
+      value: 国内dns
       disabled: false
   - proxy_rule_set:
-      match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/ChinaDomain.yaml
-      value: Domestic-DNS
+      match: https://raw.githubusercontent.com/GMOogway/shadowrocket-rules/master/sr_direct_list.module
+      value: 国内dns
+      disabled: false
+  - domain_wildcard:
+      match: '*.cn'
+      value: 国内dns
       disabled: false
   - domain_wildcard:
       match: '*'
-      value: Domestic-Encrypted-DNS
+      value: 兜底dns
       disabled: false
-  hosts:
-    dns.google:
-    - 8.8.8.8, 8.8.4.4, 2001:4860:4860::8888, 2001:4860:4860::8844
-    cloudflare-dns.com:
-    - 104.16.249.249, 104.16.248.249, 2606:4700::6810:f8f9, 2606:4700::6810:f9f9
-    dns.alidns.com:
-    - 223.5.5.5, 223.6.6.6, 2400:3200:baba::1, 2400:3200::1
-    doh.pub:
-    - 1.12.12.12, 120.53.53.53
-    dot.pub:
-    - 1.12.12.12, 120.53.53.53
   proxy_nameservers:
-  - 119.29.29.29
-  - 223.5.5.5
-real_ip_domains:
-- lancache.steamcontent.com
-- '*.msftconnecttest.com'
-- '*.msftncsi.com'
-- '*.srv.nintendo.net'
-- '*.stun.playstation.net'
-- xbox.*.microsoft.com
-- '*.xboxlive.com'
-- '*.logon.battlenet.com.cn'
-- '*.logon.battle.net'
-- stun.l.google.com
-- easy-login.10099.com.cn
-- '*-update.xoyocdn.com'
-- '*.prod.cloud.netflix.com'
-- appboot.netflix.com
-- '*-appboot.netflix.com'
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  - https://cloudflare-dns.com/dns-query
+  - https://dns.google/dns-query
 policy_groups:
 - external:
     name: 订阅列表
     type: select
     urls:
-    - http://your-service-provider
     hidden: false
     icon: https://github.com/Repcz/Repcz.github.io/raw/main/docs/egern/Photo/Egern.png
+- conditional:
+    name: 模式选择
+    rules:
+    - cellular:
+        match: ''
+        policy: 模式选择
+    - ssid:
+        match: CMCC_5G
+        policy: DIRECT
+    default_policy: 手动选择
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
+    hidden: false
 - select:
-    name: Global
+    name: 手动选择
+    policies: []
+    flatten: true
+    block_quic: true
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available.png
+    hidden: false
+- smart:
+    name: 香港节点
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
-- select:
-    name: Streaming
+    - 手动选择
+    flatten: true
+    filter: 🇭🇰|Hong Kong|Hong|HK|HKG|香港
+    block_quic: true
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+    hidden: false
+- smart:
+    name: 新国节点
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
-- select:
-    name: Microsoft
+    - 手动选择
+    flatten: true
+    filter: 🇸🇬|新加坡|Singapore|SG
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+    hidden: false
+- smart:
+    name: 台湾节点
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png
-- select:
-    name: Google
+    - 手动选择
+    flatten: true
+    filter: 🇹🇼|台湾|Taiwan|TW|Tai
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+    hidden: false
+- smart:
+    name: 日本节点
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png
+    - 手动选择
+    flatten: true
+    filter: 🇯🇵|Japan|Tokyo|JP|日本
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+    hidden: false
+- smart:
+    name: 韩国节点
+    policies:
+    - 手动选择
+    flatten: true
+    filter: 🇰🇷|韩国|Korea|KR
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
+    hidden: false
+- smart:
+    name: 美国节点
+    policies:
+    - 手动选择
+    flatten: true
+    filter: 🇺🇸|美国|United States|USA|US|States
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
+    hidden: false
+- smart:
+    name: 荷兰节点
+    policies:
+    - 手动选择
+    flatten: true
+    filter: 🇳🇱|荷兰|NLD|NL
+    icon: https://flagcdn.com/w160/nl.png
+    hidden: false
 - select:
     name: AI
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    - 模式选择
+    flatten: false
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png
+    hidden: false
 - select:
-    name: Social
+    name: TG
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Twitter.png
-- select:
-    name: Telegram
-    policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
+    - 模式选择
+    flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
+    hidden: false
 - select:
-    name: Game
+    name: YouTube
     policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
+    - 模式选择
+    flatten: false
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
+    hidden: false
 - select:
     name: Emby
     policies:
-    - Manual
-    flatten: true
+    - 模式选择
+    flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Emby.png
-- select:
-    name: Spotify
-    policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png
-- select:
-    name: Final
-    policies:
-    - HongKong
-    - United States
-    - Singapore
-    - Japan
-    - Taiwan
-    - Manual
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png
-- auto_test:
-    name: HongKong
-    policies:
-    - Manual
-    flatten: true
-    filter: (?i)🇭🇰|香港|(\b(HK|Hong)\b)
-    tolerance: 0
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
-- auto_test:
-    name: United States
-    policies:
-    - Manual
-    flatten: true
-    filter: (?i)🇺🇸|美国|洛杉矶|圣何塞|(\b(US|United States)\b)
-    tolerance: 0
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png
-- auto_test:
-    name: Singapore
-    policies:
-    - Manual
-    flatten: true
-    filter: (?i)🇸🇬|新加坡|狮|(\b(SG|Singapore)\b)
-    tolerance: 0
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
-- auto_test:
-    name: Japan
-    policies:
-    - Manual
-    flatten: true
-    filter: (?i)🇯🇵|日本|东京|(\b(JP|Japan)\b)
-    tolerance: 0
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
-- auto_test:
-    name: Taiwan
-    policies:
-    - Manual
-    flatten: true
-    filter: (?i)🇨🇳|🇹🇼|台湾|(\b(TW|Tai|Taiwan)\b)
-    tolerance: 0
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/China.png
+    hidden: false
 rules:
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Direct.yaml
-    policy: DIRECT
+    name: Wise
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/wise.list
+    policy: 美国节点
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Reject.yaml
-    policy: REJECT
+    name: okx
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/okx.list
+    policy: 美国节点
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/AI.yaml
+    name: GoogleVoice
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GoogleVoice/GoogleVoice.list
+    policy: 美国节点
+    disabled: false 
+- rule_set:
+    name: Talkatone
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/talkatone.list
     policy: AI
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Telegram.yaml
-    policy: Telegram
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Twitter.yaml
-    policy: Social
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Facebook.yaml
-    policy: Social
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/TikTok.yaml
-    policy: Social
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Game.yaml
-    policy: Game
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Google.yaml
-    policy: Google
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Github.yaml
-    policy: Microsoft
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Microsoft.yaml
-    policy: Microsoft
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Emby.yaml
+    name: Emby
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/emby.list
     policy: Emby
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Spotify.yaml
-    policy: Spotify
+    name: N26
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/n26.list
+    policy: 荷兰节点
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Bahamut.yaml
-    policy: Streaming
+    name: Ifast
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/ifast.list
+    policy: 荷兰节点
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Netflix.yaml
-    policy: Streaming
+    name: Fibank
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/fibank.list
+    policy: 荷兰节点
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Disney.yaml
-    policy: Streaming
+    match: https://kelee.one/Tool/Loon/Lsr/AI.lsr
+    policy: AI
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/PrimeVideo.yaml
-    policy: Streaming
+    match: https://whatshub.top/rule/Binance.list
+    policy: AI
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/HBO.yaml
-    policy: Streaming
+    match: https://yfamilys.com/rule/Telegram.list
+    policy: TG
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Proxy.yaml
-    policy: Global
+    match: https://yfamilys.com/rule/YouTube.list
+    policy: YouTube
+    disabled: false
 - rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/AppleServers.yaml
-    policy: HongKong
-- rule_set:
-    match: https://github.com/Repcz/Tool/raw/X/Egern/Rules/Lan.yaml
+    match: https://raw.githubusercontent.com/Rabbit-Spec/Surge/refs/heads/Master/Rules/ChinaCIDR.list
     policy: DIRECT
-- geoip:
-    match: CN
+    disabled: false
+- rule_set:
+    match: https://raw.githubusercontent.com/Rabbit-Spec/Surge/refs/heads/Master/Rules/China.list
     policy: DIRECT
+    disabled: false
+- rule_set:
+    name: 域间路由
+    match: https://raw.githubusercontent.com/IBL3ND/rule/refs/heads/main/LAN.list
+    policy: DIRECT
+    disabled: false
 - default:
-    policy: Final
+    policy: 模式选择
 mitm:
-  enabled: true
+  ca_p12: egern.p12
+  ca_passphrase: egern
 modules:
 - url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/广告平台拦截器.beta.sgmodule
   enabled: true
 - url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/拦截HTTPDNS.beta.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/高德地图去广告.beta.sgmodule
+- url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/surge-loon-to-egern.yaml
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/闲鱼去广告.beta.sgmodule
+- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20BoxJs.official.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/酷安去广告.beta.sgmodule
+- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20Sub-Store.official.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/知乎去广告.beta.sgmodule
+- url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/refs/heads/main/modules/script-hub.beta.surge.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/滴滴出行去广告.beta.sgmodule
+- url: https://github.com/DualSubs/YouTube/releases/latest/download/DualSubs.YouTube.yaml
+  compat_arguments:
+    Type: Translate
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/微博轻享版去广告.beta.sgmodule
+- url: https://kelee.one/Tool/Loon/Lpx/Bilibili_remove_ads.lpx
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/微信小程序去广告.beta.sgmodule
+- url: https://kelee.one/Tool/Loon/Lpx/DragonRead_remove_ads.lpx
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/微信公众号去广告.beta.sgmodule
+- url: https://kelee.one/Tool/Loon/Lpx/XiaChuFang_remove_ads.lpx
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/小红书去广告.beta.sgmodule
+- url: https://kelee.one/Tool/Loon/Lpx/Reddit_remove_ads.lpx
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/什么值得买去广告.beta.sgmodule
+- url: https://kelee.one/Tool/Loon/Lpx/Node_detection_tool.lpx
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Beta/IT之家去广告.beta.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/fmz200/wool_scripts/refs/heads/main/Surge/module/XWebAds.module
-  enabled: true
-- url: https://raw.githubusercontent.com/Keywos/rule/main/script/wy/wy.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Module/Block/Advertising.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/githubdulong/Script/master/Surge/jd_price2.sgmodule
-  enabled: true
-- url: https://github.com/chavyleung/scripts/raw/master/box/rewrite/boxjs.rewrite.surge.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/kokoryh/Sparkle/refs/heads/master/release/surge/module/bilibili.sgmodule
-  enabled: true
-- url: https://raw.githubusercontent.com/xream/scripts/main/surge/modules/network-info/network-info-lite.sgmodule
-  enabled: false
-- url: https://raw.githubusercontent.com/001ProMax/Surge/main/Module/AD/Spotify.sgmodule
-  enabled: false
-- name: SubStore
-  url: https://raw.githubusercontent.com/sub-store-org/Sub-Store/refs/heads/master/config/Egern.yaml
-  enabled: false
