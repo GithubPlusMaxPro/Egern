@@ -155,6 +155,13 @@ policy_groups:
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
     hidden: false
+- select:
+    name: Emby
+    policies:
+    - 自动选择
+    flatten: false
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Emby.png
+    hidden: false
 rules:
 - rule_set:
     name: Wise
