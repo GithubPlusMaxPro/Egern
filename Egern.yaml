@@ -59,11 +59,11 @@ dns:
   - https://dns.google/dns-query
 policy_groups:
 - conditional:
-    name: 自动选择
+    name: 模式选择
     rules:
     - cellular:
         match: ''
-        policy: 手动选择
+        policy: 模式选择
     - ssid:
         match: CMCC_5G
         policy: DIRECT
@@ -135,30 +135,30 @@ policy_groups:
     icon: https://flagcdn.com/w160/nl.png
     hidden: false
 - select:
-    name: Ai
+    name: AI
     policies:
-    - 自动选择
+    - 模式选择
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png
     hidden: false
 - select:
     name: TG
     policies:
-    - 自动选择
+    - 模式选择
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png
     hidden: false
 - select:
     name: YouTube
     policies:
-    - 自动选择
+    - 模式选择
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
     hidden: false
 - select:
     name: Emby
     policies:
-    - 自动选择
+    - 模式选择
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Emby.png
     hidden: false
@@ -166,45 +166,50 @@ rules:
 - rule_set:
     name: Wise
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/wise.list
-    policy: US
+    policy: 美国节点
     disabled: false
 - rule_set:
     name: okx
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/okx.list
-    policy: US
+    policy: 美国节点
     disabled: false
 - rule_set:
     name: GoogleVoice
     match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/GoogleVoice/GoogleVoice.list
-    policy: US
+    policy: 美国节点
+    disabled: false 
+- rule_set:
+    name: Talkatone
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/talkatone.list
+    policy: AI
     disabled: false
 - rule_set:
-    name: emby
+    name: Emby
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/emby.list
-    policy: emby
+    policy: Emby
     disabled: false
 - rule_set:
-    name: n26
+    name: N26
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/n26.list
-    policy: NL
+    policy: 荷兰节点
     disabled: false
 - rule_set:
-    name: ifast
+    name: Ifast
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/ifast.list
-    policy: NL
+    policy: 荷兰节点
     disabled: false
 - rule_set:
-    name: fibank
+    name: Fibank
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/fibank.list
-    policy: NL
+    policy: 荷兰节点
     disabled: false
 - rule_set:
     match: https://kelee.one/Tool/Loon/Lsr/AI.lsr
-    policy: Ai
+    policy: AI
     disabled: false
 - rule_set:
     match: https://whatshub.top/rule/Binance.list
-    policy: Ai
+    policy: AI
     disabled: false
 - rule_set:
     match: https://yfamilys.com/rule/Telegram.list
@@ -228,7 +233,7 @@ rules:
     policy: DIRECT
     disabled: false
 - default:
-    policy: 自动选择
+    policy: 模式选择
 mitm:
   ca_p12: egern.p12
   ca_passphrase: egern
