@@ -58,6 +58,13 @@ dns:
   - https://cloudflare-dns.com/dns-query
   - https://dns.google/dns-query
 policy_groups:
+- external:
+    name: Manual
+    type: select
+    urls:
+    - http://your-service-provider
+    hidden: false
+    icon: https://github.com/Repcz/Repcz.github.io/raw/main/docs/egern/Photo/Egern.png
 - conditional:
     name: 模式选择
     rules:
