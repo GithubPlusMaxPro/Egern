@@ -138,7 +138,7 @@ policy_groups:
     - 手动选择
     flatten: true
     filter: 🇳🇱|荷兰|NLD|NL
-    icon: https://flagcdn.com/w160/nl.png
+    icon: https://raw.githubusercontent.com/GithubPlusMaxPro/Egern/refs/heads/main/icon/nl.png
     hidden: false
 - select:
     name: AI
