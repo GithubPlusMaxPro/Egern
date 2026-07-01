@@ -69,7 +69,7 @@ policy_groups:
     rules:
     - cellular:
         match: ''
-        policy: 模式选择
+        policy: 手动选择
     - ssid:
         match: CMCC_5G
         policy: DIRECT
