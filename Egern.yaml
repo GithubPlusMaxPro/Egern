@@ -297,5 +297,4 @@ modules:
   enabled: true
 - url: https://kelee.one/Tool/Loon/Lpx/Reddit_remove_ads.lpx
   enabled: true
-- url: https://kelee.one/Tool/Loon/Lpx/Node_detection_tool.lpx
-  enabled: true
+
