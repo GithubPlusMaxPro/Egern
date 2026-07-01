@@ -124,7 +124,7 @@ policy_groups:
     filter: 🇰🇷|韩国|Korea|KR|春川
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png
     hidden: false
-- smart:
+- select:
     name: 美国节点
     policies:
     - 订阅列表
