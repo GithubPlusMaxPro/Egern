@@ -233,6 +233,11 @@ rules:
     policy: 荷兰节点
     disabled: false
 - rule_set:
+    name: Bybit
+    match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/bybit.list
+    policy: 荷兰节点
+    disabled: false
+- rule_set:
     name: Ifast
     match: https://raw.githubusercontent.com/GithubPlusMaxPro/loon/refs/heads/main/ifast.list
     policy: 荷兰节点
